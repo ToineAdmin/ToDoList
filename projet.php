@@ -71,7 +71,7 @@
                   <button type="submit" name="supp_task" value="<?= $donnees['id'] ?>">Supprimer</button>
                 </form>
                 <form method="POST">
-                  <input type="hidden" name="task_id" value="<?= $donnees['id'] ?>"> // Utiliser un input hidden pour pouvoir réucuper l'id de la tâche
+                  <input type="hidden" name="task_id" value="<?= $donnees['id'] ?>"> 
                   <button type="submit" name="modifier">Modifier</button>
                 </form>
                 <?php
