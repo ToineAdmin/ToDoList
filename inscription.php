@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,11 +12,7 @@
 
 <?php
 
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=inscription;charset=utf8', 'root', '');
-} catch (Exception $e) {
-    die('Erreur: ' . $e->getMessage());
-};
+require_once 'config.php'; // connexion à la base de donnée
 
 
 $erreur = "";
@@ -25,6 +22,7 @@ $erreur = "";
 if (isset($_POST['create_user']) && isset($_POST['create_mdp'])) {
     $add_user = $_POST['create_user'];
     $add_mdp = $_POST['create_mdp'];
+    $secure_mdp = password_hash($add_mdp, PASSWORD_DEFAULT);
     
     if (empty($add_user) || empty($add_mdp)) {
         $erreur = "Veuillez rentrer un nom d'utilisateur et/ou un mot de passe";
@@ -46,7 +44,7 @@ if (isset($_POST['create_user']) && isset($_POST['create_mdp'])) {
         else{
             $requete = $bdd->prepare('INSERT INTO users (user, mdp) VALUES (:user, :mdp)');
             $requete->bindParam(':user', $add_user);
-            $requete->bindParam(':mdp', $add_mdp);
+            $requete->bindParam(':mdp', $secure_mdp);
             $requete->execute();
         }
     }
@@ -71,7 +69,7 @@ if (isset($_POST['create_user']) && isset($_POST['create_mdp'])) {
                         <p style="color:red;"><?= $erreur ?></p>
                     <?php endif; ?>
                     <button type="submit">S'inscrire</button>
-                    <a href="conect.php">Retour</a>
+                    <a href="conect.php">Connexion</a>
                 </form>
             </div>
     </main>

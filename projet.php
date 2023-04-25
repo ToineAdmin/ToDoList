@@ -1,3 +1,15 @@
+<?php 
+    session_start();
+    if(isset($_POST['user'])){
+      $_SESSION['user'] = $_POST['user'];
+    };
+
+    if(isset($_SESSION['user'])){
+      echo '<h2> Bonjour ' . ucfirst( $_SESSION['user']) . '</h2>';
+    };
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
