@@ -7,23 +7,27 @@ if(isset($_POST['user']) && isset($_POST['mdp'])){
 
     $username = htmlspecialchars($_POST['user']);
     $password = htmlspecialchars($_POST['mdp']);
-
-
-    $requete = $bdd->prepare('SELECT * FROM users WHERE user = :user');
+    try{
+        $requete = $bdd->prepare('SELECT * FROM users WHERE user = :user');
     $requete->bindParam(':user', $username); 
     $requete->execute();
-    $row = $requete->rowCount(); // récupère le nombre de ligne renvoyée
+    $row = $requete->fetchAll(); // créer un tableau si corespondance
+    }catch(\Exception $e){
+        echo($e->getMessage());
+    };
 
+    if (count($row) > 0){ // si tableau existe 
 
-    if ($row > 0){ // regarde si il y a une correspondance
-        $data = $requete->fetchAll();
-        if(password_verify($password, $data[0]["mdp"])){ // vérifie si le mdp non hach = celui de la base de donnée
+        if(password_verify($password, $row[0]['mdp'])){ // vérifie si le mdp non hach = celui de la base de donnée
             header('Location:projet.php'); // devrait renvoyer vers projet mais ne le fais pas 
             $_SESSION['username'] = $username; // stock le username dans la globale session
         }
+
+
     } else {
         echo 'Nom d\'utilisateur ou mot de passe incorrect.';
     }
+
 };
 
 
